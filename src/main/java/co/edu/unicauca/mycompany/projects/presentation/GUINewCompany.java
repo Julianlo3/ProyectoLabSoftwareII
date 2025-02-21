@@ -1,11 +1,9 @@
 
 package co.edu.unicauca.mycompany.projects.presentation;
 
-import co.edu.unicauca.mycompany.projects.access.CompanyArraysRepository;
-import co.edu.unicauca.mycompany.projects.access.ICompanyRepository;
-import co.edu.unicauca.mycompany.projects.domain.entities.Company;
-import co.edu.unicauca.mycompany.projects.domain.entities.Sector;
-import co.edu.unicauca.mycompany.projects.domain.services.CompanyService;
+import co.edu.unicauca.mycompany.projects.domain.entities.*;
+import co.edu.unicauca.mycompany.projects.domain.services.ICompanyService;
+import co.edu.unicauca.mycompany.projects.infra.Messages;
 import javax.swing.JFrame;
 
 /**
@@ -13,19 +11,18 @@ import javax.swing.JFrame;
  * @author Libardo, Julio
  */
 public class GUINewCompany extends javax.swing.JDialog {
-    CompanyService companyService;
-    GUIMenu menu;
     
-    
+    private ICompanyService companyService;
+
     /**
      * Creates new form GUINewCompany
      * @param parent
+     * @param service
      */
-    public GUINewCompany(JFrame parent,CompanyService service) {
+    public GUINewCompany(JFrame parent, ICompanyService service) {
         super(parent, "Nueva Empresa", true); //true: modal
-        companyService = service;
-         menu = (GUIMenu)parent;
         
+        this.companyService = service;
         initComponents();
         setSize(600,500);
         setLocationRelativeTo(parent);
@@ -38,6 +35,18 @@ public class GUINewCompany extends javax.swing.JDialog {
             cboSector.addItem(sector.toString());
         }
     }
+    
+    
+    private boolean checkPass(String pass){
+        if(!pass.matches(".{6,}")) return false;
+        else if(!pass.matches(".*[A-Z]+.*")) return false;
+        else if(!pass.matches(".*[a-z]+.*")) return false;
+        else if(!pass.matches(".*[0-9]+.*")) return false;
+        else if(!pass.matches(".*[\\*\\+\\-\\_\\.\\:\\,\\;\\¿\\?\\!\\¡\\#\\$\\%\\&\\/\\=\\@\\<\\>]+.*")) return false;
+        
+        return true;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,7 +68,7 @@ public class GUINewCompany extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         txtPhone = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtWeb = new javax.swing.JTextField();
+        txtWebPage = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         cboSector = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
@@ -70,6 +79,7 @@ public class GUINewCompany extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -114,7 +124,7 @@ public class GUINewCompany extends javax.swing.JDialog {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Página web:");
         pnlCenter.add(jLabel5);
-        pnlCenter.add(txtWeb);
+        pnlCenter.add(txtWebPage);
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("*Sector industrial:");
@@ -154,20 +164,44 @@ public class GUINewCompany extends javax.swing.JDialog {
             return;
         }
         
-        String nitG = txtNit.getText();
-        String nameG = txtName.getText();
-        String phoneG = txtPhone.getText();
-        String webG = txtWeb.getText();
-        Sector sectorG = Sector.valueOf(cboSector.getSelectedItem().toString());
-        String emailG = txtEmail.getText();
-        String passwordG = txtPassword.getText();
+        String nombre = txtName.getText().trim();
+        if (nombre.equals("")){
+            Messages.showMessageDialog("Debe agregar el Nombre", "Atención");
+            txtName.requestFocus();
+            return;
+        }
         
-         Company company = new Company(nitG,nameG,phoneG,webG,sectorG,emailG,passwordG);
-         companyService.saveCompany(company);
-         Messages.showMessageDialog("Companya creada correctamente", "companyNew");
-         menu.fillCompanies();
-         
-       
+        String telefono = txtPhone.getText().trim();
+        String pagina = txtWebPage.getText().trim();
+        Sector sector = Sector.values()[cboSector.getSelectedIndex()];
+        
+        String email = txtEmail.getText().trim();
+        if (email.equals("")){
+            Messages.showMessageDialog("Debe agregar el Email", "Atención");
+            txtEmail.requestFocus();
+            return;
+        } else if(!email.matches(".+[@]{1}.+[.]{1}.+")){
+            Messages.showMessageDialog("Email invalido", "Atencion");
+            txtEmail.requestFocus();
+            return;
+        }
+        
+        String pass = txtPassword.getText().trim();
+        if (pass.equals("")){
+            Messages.showMessageDialog("Debe agregar la Contraseña", "Atención");
+            txtPassword.requestFocus();
+            return;
+        } else if(!checkPass(pass)){
+            Messages.showMessageDialog("Contraseña invalida", "Atención");
+            txtPassword.requestFocus();
+            return;
+        }
+        
+        companyService.saveCompany(new Company(nit, nombre, telefono, pagina, sector, email, pass));
+        
+        Messages.showMessageDialog("Compañia registrada exitosamente", "Atencion");
+        
+        this.dispose();
     }//GEN-LAST:event_btnSaveActionPerformed
 
 
@@ -193,6 +227,6 @@ public class GUINewCompany extends javax.swing.JDialog {
     private javax.swing.JTextField txtNit;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtPhone;
-    private javax.swing.JTextField txtWeb;
+    private javax.swing.JTextField txtWebPage;
     // End of variables declaration//GEN-END:variables
 }

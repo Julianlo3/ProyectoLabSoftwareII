@@ -34,8 +34,8 @@ public class Factory {
         if (instance == null) {
             instance = new Factory();
         }
+        
         return instance;
-
     }
 
     /**

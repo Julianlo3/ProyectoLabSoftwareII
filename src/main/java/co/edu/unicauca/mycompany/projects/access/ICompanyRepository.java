@@ -10,7 +10,8 @@ import java.util.List;
  * @author Libardo, Julio
  */
 public interface ICompanyRepository {
+    
     boolean save(Company newCompany);
-
+    void initializeDatabase();
     List<Company> listAll();
 }

@@ -22,14 +22,13 @@ public class CompanyServiceTest {
      * Para hacer pruebas unitarias de la clase CompanyService, podemos usar 
      * Mockito para simular (mock) el comportamiento del ICompanyRepository.
      */
-    
-    @Mock 
-    ICompanyRepository repositoryMock;
+    @Mock
+    private ICompanyRepository repositoryMock;
     
     private CompanyService companyService;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         MockitoAnnotations.openMocks(this); // IMPORTANTE: Inicializa los mocks
         companyService = new CompanyService(repositoryMock); // Inyección del mock
     }
@@ -44,7 +43,7 @@ public class CompanyServiceTest {
 
         );
 
-                
+        
         when(repositoryMock.listAll()).thenReturn(companies);
 
         // Llamado al método
@@ -62,7 +61,7 @@ public class CompanyServiceTest {
 
     @Test
     void testSaveCompany_Success() {
-        Company newCompany = new Company("123459", "Empresa D","3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
+        Company newCompany = new Company("123459", "Empresa D", "3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
 
         when(repositoryMock.save(newCompany)).thenReturn(true); // Simula éxito
 
@@ -74,7 +73,7 @@ public class CompanyServiceTest {
 
     @Test
     void testSaveCompany_Failure() {
-        Company newCompany = new Company("123459", "Empresa D","3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
+        Company newCompany = new Company("123459", "Empresa D", "3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
 
         when(repositoryMock.save(newCompany)).thenReturn(false); // Simula fallo
 

@@ -14,6 +14,10 @@ public class Company {
     private String email;
     private String password;
 
+    public Company(){
+        
+    }
+    
     public Company(String nit, String name, String phone, String pageWeb, Sector sector, String email, String password) {
         this.nit = nit;
         this.name = name;

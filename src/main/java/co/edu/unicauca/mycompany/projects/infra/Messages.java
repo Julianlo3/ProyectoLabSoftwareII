@@ -1,4 +1,4 @@
-package co.edu.unicauca.mycompany.projects.presentation;
+package co.edu.unicauca.mycompany.projects.infra;
 
 import javax.swing.JOptionPane;
 
