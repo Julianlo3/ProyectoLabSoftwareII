@@ -3,6 +3,7 @@ package co.edu.unicauca.mycompany.projects.presentation;
 
 import co.edu.unicauca.mycompany.projects.domain.entities.*;
 import co.edu.unicauca.mycompany.projects.domain.services.ICompanyService;
+import co.edu.unicauca.mycompany.projects.domain.services.validacionDatosEmpresa;
 import co.edu.unicauca.mycompany.projects.infra.Messages;
 import javax.swing.JFrame;
 
@@ -36,16 +37,6 @@ public class GUINewCompany extends javax.swing.JDialog {
         }
     }
     
-    
-    private boolean checkPass(String pass){
-        if(!pass.matches(".{6,}")) return false;
-        else if(!pass.matches(".*[A-Z]+.*")) return false;
-        else if(!pass.matches(".*[a-z]+.*")) return false;
-        else if(!pass.matches(".*[0-9]+.*")) return false;
-        else if(!pass.matches(".*[\\*\\+\\-\\_\\.\\:\\,\\;\\¿\\?\\!\\¡\\#\\$\\%\\&\\/\\=\\@\\<\\>]+.*")) return false;
-        
-        return true;
-    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -157,31 +148,30 @@ public class GUINewCompany extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        String nit = txtNit.getText().trim();
+        validacionDatosEmpresa validar = new validacionDatosEmpresa();
+        
+        String nit = txtNit.getText();
         if (nit.equals("")){
             Messages.showMessageDialog("Debe agregar el Nit", "Atención");
             txtNit.requestFocus();
             return;
         }
+      
         
-        String nombre = txtName.getText().trim();
+        String nombre = txtName.getText();
         if (nombre.equals("")){
             Messages.showMessageDialog("Debe agregar el Nombre", "Atención");
             txtName.requestFocus();
             return;
         }
         
-        String telefono = txtPhone.getText().trim();
-        String pagina = txtWebPage.getText().trim();
+        String telefono = txtPhone.getText();
+        String pagina = txtWebPage.getText();
         Sector sector = Sector.values()[cboSector.getSelectedIndex()];
         
         String email = txtEmail.getText().trim();
         if (email.equals("")){
             Messages.showMessageDialog("Debe agregar el Email", "Atención");
-            txtEmail.requestFocus();
-            return;
-        } else if(!email.matches(".+[@]{1}.+[.]{1}.+")){
-            Messages.showMessageDialog("Email invalido", "Atencion");
             txtEmail.requestFocus();
             return;
         }
@@ -191,17 +181,19 @@ public class GUINewCompany extends javax.swing.JDialog {
             Messages.showMessageDialog("Debe agregar la Contraseña", "Atención");
             txtPassword.requestFocus();
             return;
-        } else if(!checkPass(pass)){
-            Messages.showMessageDialog("Contraseña invalida", "Atención");
-            txtPassword.requestFocus();
-            return;
+        }
+        if(!validar.validarClave(pass)){
+            validar.mostrarEjemploClave();
+        }
+        if(validar.validarRegistroEmpresa(nit, email, nombre, pass)){
+        companyService.saveCompany(new Company(nit, nombre, telefono, pagina, sector, email, pass));
+        Messages.showMessageDialog("Compañia registrada exitosamente", "Atencion");
+        this.dispose();
         }
         
-        companyService.saveCompany(new Company(nit, nombre, telefono, pagina, sector, email, pass));
         
-        Messages.showMessageDialog("Compañia registrada exitosamente", "Atencion");
         
-        this.dispose();
+        
     }//GEN-LAST:event_btnSaveActionPerformed
 
 
