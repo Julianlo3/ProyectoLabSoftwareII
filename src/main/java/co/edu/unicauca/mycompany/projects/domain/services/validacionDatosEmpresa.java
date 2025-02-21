@@ -12,8 +12,8 @@ import co.edu.unicauca.mycompany.projects.infra.Messages;
  */
 public class validacionDatosEmpresa {
     
-    public boolean validarRegistroEmpresa(String nit,String email,String numero,String clave){
-        if((validarNit(nit) && validarCorreo(email) && validarClave(clave))){
+    public boolean validarRegistroEmpresa(String nit,String email,String telefono,String clave){
+        if((validarNit(nit) && validarCorreo(email) && validarClave(clave) && validarNumero(telefono))){
             return true;
         }
         return false;
@@ -38,8 +38,10 @@ public class validacionDatosEmpresa {
     public boolean validarNumero(String numero){
         try {
             Integer.valueOf(numero);
+            
             return true;
         } catch (NumberFormatException e) {
+            Messages.showMessageDialog("Error en telefono. Ingrese un número", "Atención");
             return false;
         }
     };

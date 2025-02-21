@@ -185,7 +185,7 @@ public class GUINewCompany extends javax.swing.JDialog {
         if(!validar.validarClave(pass)){
             validar.mostrarEjemploClave();
         }
-        if(validar.validarRegistroEmpresa(nit, email, nombre, pass)){
+        if(validar.validarRegistroEmpresa(nit, email, telefono, pass)){
         companyService.saveCompany(new Company(nit, nombre, telefono, pagina, sector, email, pass));
         Messages.showMessageDialog("Compañia registrada exitosamente", "Atencion");
         this.dispose();
