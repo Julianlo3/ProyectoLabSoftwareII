@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author anvig
+ * @author lopez
  */
 public interface ICompanyService {
     

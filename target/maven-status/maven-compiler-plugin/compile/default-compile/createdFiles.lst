@@ -3,6 +3,7 @@ co\edu\unicauca\mycompany\projects\main\Main.class
 co\edu\unicauca\mycompany\projects\domain\services\CompanyService.class
 co\edu\unicauca\mycompany\projects\presentation\GUINewCompany$2.class
 co\edu\unicauca\mycompany\projects\domain\services\ICompanyService.class
+co\edu\unicauca\mycompany\projects\domain\services\validacionDatosEmpresa.class
 co\edu\unicauca\mycompany\projects\domain\entities\Company.class
 co\edu\unicauca\mycompany\projects\access\Factory.class
 co\edu\unicauca\mycompany\projects\domain\entities\Sector.class

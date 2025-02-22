@@ -22,6 +22,8 @@ public class Factory {
         dictionary = new HashMap<>();
         dictionary.put("ARRAYS", new CompanyArraysRepository());
         dictionary.put("SQLITE", new CompanySqliteRepository());
+        //nueva extensión de una base NOSQL
+        //dictionary.put("MONGODB", new CompanySqliteRepository());
     }
 
     /**
